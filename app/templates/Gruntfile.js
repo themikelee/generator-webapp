@@ -1,4 +1,11 @@
-// Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>
+// Taken from [Yeoman webapp generator](https://github.com/yeoman/generator-webapp).
+// The most recent commit at the time of forking was June 6, 2013:
+// Fixed http fonts path by Alex Kühne [3f10765](https://github.com/yeoman/generator-webapp/commit/3f107651818b2603eb234354f96c2d303d94024f)
+
+// This will output a comment in the generated Gruntfile.js that will tell you the date, "generator-webapp",
+// and the [npm version](https://npmjs.org/doc/version.html) of generator-webapp at the time it was run.
+/* Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %> */
+//
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
@@ -6,22 +13,39 @@ var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
 
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
-
+// **[Globbing](http://gruntjs.com/configuring-tasks#globbing-patterns)**
+//
+//     'test/spec/{,*/}*.js'
+// `{}` is a comma separated list of patterns. `*` is any string not including '/'.
+// So this matches empty string or a string of any length followed by /
+// then a filename ending in ".js". In other words test/spec/someFile.js or test/spec/someFolder/someFile.js
+// but not any further down.
+//
+//     'test/spec/**/*.js'
+// `**` matches any number of characters, including /, as long as it's the only thing in a path part.
+// That makes this a recursive search that will match all subfolders.
+/**
+ * *Globbing*
+ * for performance reasons we're only matching one level down:
+ * 'test/spec/{,* /}*.js'
+ * use this if you want to match all subfolders:
+ * 'test/spec/** /*.js'
+ */
+//The first part is the ["wrapper" function](http://gruntjs.com/getting-started#the-wrapper-function), which encapsulates your Grunt configuration.
 module.exports = function (grunt) {
-    // load all grunt tasks
+    // [matchdep](https://npmjs.org/package/matchdep) - You'll see many packages say to run
+    // [grunt.loadNpmTasks](https://github.com/gruntjs/grunt/wiki/grunt.task#grunttaskloadnpmtasks-)('grunt-contrib-whatever'); in their instructions. This obviates the need for that.
+    /* load all grunt tasks */
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-    // configurable paths
+    // These point to where your app lives (as opposed to tests and other code) and where you want build tasks to export to.
+    /* configurable paths*/
     var yeomanConfig = {
         app: 'app',
         dist: 'dist'
     };
 
+    // configures your tasks
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
@@ -29,6 +53,7 @@ module.exports = function (grunt) {
                 nospawn: true
             },
             coffee: {
+                // <%%= comes out as <%= in the generated Gruntfile
                 files: ['<%%= yeoman.app %>/scripts/{,*/}*.coffee'],
                 tasks: ['coffee:dist']
             },
@@ -55,7 +80,7 @@ module.exports = function (grunt) {
         connect: {
             options: {
                 port: 9000,
-                // change this to '0.0.0.0' to access the server from outside
+                /* change this to '0.0.0.0' to access the server from outside */
                 hostname: 'localhost'
             },
             livereload: {
@@ -183,24 +208,28 @@ module.exports = function (grunt) {
             dist: {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
                 options: {
-                    // `name` and `out` is set by grunt-usemin
+                    /* `name` and `out` is set by grunt-usemin */
                     baseUrl: yeomanConfig.app + '/scripts',
                     optimize: 'none',
-                    // TODO: Figure out how to make sourcemaps work with grunt-usemin
-                    // https://github.com/yeoman/grunt-usemin/issues/30
-                    //generateSourceMaps: true,
-                    // required to support SourceMaps
-                    // http://requirejs.org/docs/errors.html#sourcemapcomments
+                    /**
+                     * TODO: Figure out how to make sourcemaps work with grunt-usemin
+                     * https://github.com/yeoman/grunt-usemin/issues/30
+                     *generateSourceMaps: true,
+                     * required to support SourceMaps
+                     * http://requirejs.org/docs/errors.html#sourcemapcomments
+                     */
                     preserveLicenseComments: false,
                     useStrict: true,
                     wrap: true
-                    //uglify2: {} // https://github.com/mishoo/UglifyJS2
+                    /*uglify2: {} // https://github.com/mishoo/UglifyJS2 */
                 }
             }
         },<% } else { %>
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
+        /*
+         * not enabled since usemin task does concat and uglify
+         * check index.html to edit your build targets
+         * enable this task if you prefer defining your build targets here
+         */
         /*uglify: {
             dist: {}
         },*/<% } %>
@@ -280,7 +309,7 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        // Put files not handled in other tasks here
+        /* Put files not handled in other tasks here */
         copy: {
             dist: {
                 files: [{
