@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Gruntfile.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>Gruntfile.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Taken from <a href="https://github.com/yeoman/generator-webapp">Yeoman webapp generator</a>.
+The most recent commit at the time of forking was June 6, 2013:
+Fixed http fonts path by Alex Kühne <a href="https://github.com/yeoman/generator-webapp/commit/3f107651818b2603eb234354f96c2d303d94024f">3f10765</a></p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>This will output a comment in the generated Gruntfile.js that will tell you the date, &quot;generator-webapp&quot;,
+and the <a href="https://npmjs.org/doc/version.html">npm version</a> of generator-webapp at the time it was run.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="comment">/* Generated on &lt;%= (new Date).toISOString().split('T')[0] %&gt; using &lt;%= pkg.name %&gt; &lt;%= pkg.version %&gt; */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="string">'use strict'</span>;
+<span class="keyword">var</span> LIVERELOAD_PORT = <span class="number">35729</span>;
+<span class="keyword">var</span> lrSnippet = require(<span class="string">'connect-livereload'</span>)({port: LIVERELOAD_PORT});
+<span class="keyword">var</span> mountFolder = <span class="function"><span class="keyword">function</span> <span class="params">(connect, dir)</span> {</span>
+    <span class="keyword">return</span> connect.static(require(<span class="string">'path'</span>).resolve(dir));
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong><a href="http://gruntjs.com/configuring-tasks#globbing-patterns">Globbing</a></strong></p>
+<pre><code>&#39;test/spec/{,*/}*.js&#39;</code></pre>
+<p><code>{}</code> is a comma separated list of patterns. <code>*</code> is any string not including &#39;/&#39;.
+So this matches empty string or a string of any length followed by /
+then a filename ending in &quot;.js&quot;. In other words test/spec/someFile.js or test/spec/someFolder/someFile.js
+but not any further down.</p>
+<pre><code>&#39;test/spec/**/*.js&#39;</code></pre>
+<p><code>**</code> matches any number of characters, including /, as long as it&#39;s the only thing in a path part.
+That makes this a recursive search that will match all subfolders.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="comment">/**
+ * *Globbing*
+ * for performance reasons we're only matching one level down:
+ * 'test/spec/{,* /}*.js'
+ * use this if you want to match all subfolders:
+ * 'test/spec/** /*.js'
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The first part is the <a href="http://gruntjs.com/getting-started#the-wrapper-function">&quot;wrapper&quot; function</a>, which encapsulates your Grunt configuration.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><a href="https://npmjs.org/package/matchdep">matchdep</a> - You&#39;ll see many packages say to run
+<a href="https://github.com/gruntjs/grunt/wiki/grunt.task#grunttaskloadnpmtasks-">grunt.loadNpmTasks</a>(&#39;grunt-contrib-whatever&#39;); in their instructions. This obviates the need for that.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="comment">/* load all grunt tasks */</span>
+    require(<span class="string">'matchdep'</span>).filterDev(<span class="string">'grunt-*'</span>).forEach(grunt.loadNpmTasks);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>These point to where your app lives (as opposed to tests and other code) and where you want build tasks to export to.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="comment">/* configurable paths*/</span>
+    <span class="keyword">var</span> yeomanConfig = {
+        app: <span class="string">'app'</span>,
+        dist: <span class="string">'dist'</span>
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>configures your tasks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    grunt.initConfig({
+        yeoman: yeomanConfig,
+        watch: {
+            options: {
+                nospawn: <span class="literal">true</span>
+            },
+            coffee: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>&lt;%%= comes out as &lt;%= in the generated Gruntfile</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                files: [<span class="string">'&lt;%%= yeoman.app %&gt;/scripts/{,*/}*.coffee'</span>],
+                tasks: [<span class="string">'coffee:dist'</span>]
+            },
+            coffeeTest: {
+                files: [<span class="string">'test/spec/{,*/}*.coffee'</span>],
+                tasks: [<span class="string">'coffee:test'</span>]
+            },
+            compass: {
+                files: [<span class="string">'&lt;%%= yeoman.app %&gt;/styles/{,*/}*.{scss,sass}'</span>],
+                tasks: [<span class="string">'compass:server'</span>]
+            },
+            livereload: {
+                options: {
+                    livereload: LIVERELOAD_PORT
+                },
+                files: [
+                    <span class="string">'&lt;%%= yeoman.app %&gt;/*.html'</span>,
+                    <span class="string">'{.tmp,&lt;%%= yeoman.app %&gt;}/styles/{,*/}*.css'</span>,
+                    <span class="string">'{.tmp,&lt;%%= yeoman.app %&gt;}/scripts/{,*/}*.js'</span>,
+                    <span class="string">'&lt;%%= yeoman.app %&gt;/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'</span>
+                ]
+            }
+        },
+        connect: {
+            options: {
+                port: <span class="number">9000</span>,
+                <span class="comment">/* change this to '0.0.0.0' to access the server from outside */</span>
+                hostname: <span class="string">'localhost'</span>
+            },
+            livereload: {
+                options: {
+                    middleware: <span class="function"><span class="keyword">function</span> <span class="params">(connect)</span> {</span>
+                        <span class="keyword">return</span> [
+                            lrSnippet,
+                            mountFolder(connect, <span class="string">'.tmp'</span>),
+                            mountFolder(connect, yeomanConfig.app)
+                        ];
+                    }
+                }
+            },
+            test: {
+                options: {
+                    middleware: <span class="function"><span class="keyword">function</span> <span class="params">(connect)</span> {</span>
+                        <span class="keyword">return</span> [
+                            mountFolder(connect, <span class="string">'.tmp'</span>),
+                            mountFolder(connect, <span class="string">'test'</span>)
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    middleware: <span class="function"><span class="keyword">function</span> <span class="params">(connect)</span> {</span>
+                        <span class="keyword">return</span> [
+                            mountFolder(connect, yeomanConfig.dist)
+                        ];
+                    }
+                }
+            }
+        },
+        open: {
+            server: {
+                path: <span class="string">'http://localhost:&lt;%%= connect.options.port %&gt;'</span>
+            }
+        },
+        clean: {
+            dist: {
+                files: [{
+                    dot: <span class="literal">true</span>,
+                    src: [
+                        <span class="string">'.tmp'</span>,
+                        <span class="string">'&lt;%%= yeoman.dist %&gt;/*'</span>,
+                        <span class="string">'!&lt;%%= yeoman.dist %&gt;/.git*'</span>
+                    ]
+                }]
+            },
+            server: <span class="string">'.tmp'</span>
+        },
+        jshint: {
+            options: {
+                jshintrc: <span class="string">'.jshintrc'</span>
+            },
+            all: [
+                <span class="string">'Gruntfile.js'</span>,
+                <span class="string">'&lt;%%= yeoman.app %&gt;/scripts/{,*/}*.js'</span>,
+                <span class="string">'!&lt;%%= yeoman.app %&gt;/scripts/vendor/*'</span>,
+                <span class="string">'test/spec/{,*/}*.js'</span>
+            ]
+        },<span class="xml"><span class="vbscript">&lt;% <span class="keyword">if</span> (testFramework === <span class="comment">'mocha') { %&gt;</span></span>
+        mocha: {
+            all: {
+                options: {
+                    run: true,
+                    urls: ['http://localhost:<span class="vbscript">&lt;%%= connect.options.port %&gt;</span>/index.html']
+                }
+            }
+        },<span class="vbscript">&lt;% } <span class="keyword">else</span> <span class="keyword">if</span> (testFramework === <span class="comment">'jasmine') { %&gt;</span></span>
+        jasmine: {
+            all: {
+                options: {
+                    specs: 'test/spec/{,*/}*.js'
+                }
+            }
+        },<span class="vbscript">&lt;% } %&gt;</span>
+        coffee: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/scripts',
+                    src: '{,*/}*.coffee',
+                    dest: '.tmp/scripts',
+                    ext: '.js'
+                }]
+            },
+            test: {
+                files: [{
+                    expand: true,
+                    cwd: 'test/spec',
+                    src: '{,*/}*.coffee',
+                    dest: '.tmp/spec',
+                    ext: '.js'
+                }]
+            }
+        },
+        compass: {
+            options: {
+                sassDir: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/styles',
+                cssDir: '.tmp/styles',
+                generatedImagesDir: '.tmp/images/generated',
+                imagesDir: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/images',
+                javascriptsDir: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/scripts',
+                fontsDir: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/styles/fonts',
+                importPath: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/bower_components',
+                httpImagesPath: '/images',
+                httpGeneratedImagesPath: '/images/generated',
+                httpFontsPath: '/styles/fonts',
+                relativeAssets: false
+            },
+            dist: {},
+            server: {
+                options: {
+                    debugInfo: true
+                }
+            }
+        },
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>not used since Uglify task does concat,
+but still available if needed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="comment">/*concat: {
+            dist: {}
+        },*/</span>&lt;% <span class="keyword">if</span> (includeRequireJS) { %&gt;
+        requirejs: {
+            dist: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Options: <a href="https://github.com/jrburke/r.js/blob/master/build/example.build.js">https://github.com/jrburke/r.js/blob/master/build/example.build.js</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                options: {
+                    <span class="comment">/* `name` and `out` is set by grunt-usemin */</span>
+                    baseUrl: yeomanConfig.app + <span class="string">'/scripts'</span>,
+                    optimize: <span class="string">'none'</span>,
+                    <span class="comment">/**
+                     * TODO: Figure out how to make sourcemaps work with grunt-usemin
+                     * https://github.com/yeoman/grunt-usemin/issues/30
+                     *generateSourceMaps: true,
+                     * required to support SourceMaps
+                     * http://requirejs.org/docs/errors.html#sourcemapcomments
+                     */</span>
+                    preserveLicenseComments: <span class="literal">false</span>,
+                    useStrict: <span class="literal">true</span>,
+                    wrap: <span class="literal">true</span>
+                    <span class="comment">/*uglify2: {} // https://github.com/mishoo/UglifyJS2 */</span>
+                }
+            }
+        },<span class="xml"><span class="vbscript">&lt;% } <span class="keyword">else</span> { %&gt;</span>
+        /*
+         * not enabled since usemin task does concat and uglify
+         * check index.html to edit your build targets
+         * enable this task if you prefer defining your build targets here
+         */
+        /*uglify: {
+            dist: {}
+        },*/<span class="vbscript">&lt;% } %&gt;</span>
+        rev: {
+            dist: {
+                files: {
+                    src: [
+                        '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/scripts/{,*/}*.js',
+                        '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/styles/{,*/}*.css',
+                        '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                        '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/styles/fonts/*'
+                    ]
+                }
+            }
+        },
+        useminPrepare: {
+            options: {
+                dest: '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>'
+            },
+            html: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/index.html'
+        },
+        usemin: {
+            options: {
+                dirs: ['<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>']
+            },
+            html: ['<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/{,*/}*.html'],
+            css: ['<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/styles/{,*/}*.css']
+        },
+        imagemin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/images',
+                    src: '{,*/}*.{png,jpg,jpeg}',
+                    dest: '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/images'
+                }]
+            }
+        },
+        svgmin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/images',
+                    src: '{,*/}*.svg',
+                    dest: '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/images'
+                }]
+            }
+        },
+        cssmin: {
+            dist: {
+                files: {
+                    '<span class="vbscript">&lt;%%= yeoman.dist %&gt;</span>/styles/main.css': [
+                        '.tmp/styles/{,*/}*.css',
+                        '<span class="vbscript">&lt;%%= yeoman.app %&gt;</span>/styles/{,*/}*.css'
+                    ]
+                }
+            }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    /*removeCommentsFromCDATA: true,
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><a href="https://github.com/yeoman/grunt-usemin/issues/44">https://github.com/yeoman/grunt-usemin/issues/44</a>
+collapseWhitespace: true,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true,
+                    removeEmptyAttributes: true,
+                    removeOptionalTags: true*/
+                },
+                files: [{
+                    expand: true,
+                    cwd: '&lt;%%= yeoman.app %&gt;',
+                    src: '*.html',
+                    dest: '&lt;%%= yeoman.dist %&gt;'
+                }]
+            }
+        },
+        /* Put files not handled in other tasks here */
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '&lt;%%= yeoman.app %&gt;',
+                    dest: '&lt;%%= yeoman.dist %&gt;',
+                    src: [
+                        '*.{ico,png,txt}',
+                        '.htaccess',
+                        'images/{,*/}*.{webp,gif}',
+                        'styles/fonts/*'
+                    ]
+                }, {
+                    expand: true,
+                    cwd: '.tmp/images',
+                    dest: '&lt;%%= yeoman.dist %&gt;/images',
+                    src: [
+                        'generated/*'
+                    ]
+                }]
+            }
+        },
+        concurrent: {
+            server: [
+                'coffee:dist',
+                'compass:server'
+            ],
+            test: [
+                'coffee',
+                'compass'
+            ],
+            dist: [
+                'coffee',
+                'compass:dist',
+                'imagemin',
+                'svgmin',
+                'htmlmin'
+            ]
+        }&lt;% if (includeRequireJS) { %&gt;,
+        bower: {
+            options: {
+                exclude: ['modernizr']
+            },
+            all: {
+                rjsConfig: '&lt;%%= yeoman.app %&gt;/scripts/main.js'
+            }
+        }&lt;% } %&gt;
+    });
+
+    grunt.registerTask('server', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+            'concurrent:server',
+            'connect:livereload',
+            'open',
+            'watch'
+        ]);
+    });
+
+    grunt.registerTask('test', [
+        'clean:server',
+        'concurrent:test',
+        'connect:test',&lt;% if (testFramework === 'mocha') { %&gt;
+        'mocha'&lt;% } else if (testFramework === 'jasmine') { %&gt;
+        'jasmine'&lt;% } %&gt;
+    ]);
+
+    grunt.registerTask('build', [
+        'clean:dist',
+        'useminPrepare',
+        'concurrent:dist',&lt;% if (includeRequireJS) { %&gt;
+        'requirejs',&lt;% } %&gt;
+        'cssmin',
+        'concat',
+        'uglify',
+        'copy',
+        'rev',
+        'usemin'
+    ]);
+
+    grunt.registerTask('default', [
+        'jshint',
+        'test',
+        'build'
+    ]);
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
